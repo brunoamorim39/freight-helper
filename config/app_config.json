@@ -1,0 +1,7 @@
+{
+    "SECRET_KEY": "sWkc4yWzXcMtF3C",
+    "JWT_SECRET_KEY": "of96CWRMdsnFmrjVuRfSX9KnnidpGU",
+    "TEMPLATES_AUTO_RELOAD": true,
+    "MANIFEST_UPLOAD_FOLDER": "./uploads/manifests",
+    "MAX_CONTENT_LENGTH": 26214400
+}

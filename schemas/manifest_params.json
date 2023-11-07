@@ -1,0 +1,24 @@
+{
+    "manifest_parameters": [
+        {
+            "key": "stop_number",
+            "name": "Stop Number"
+        },
+        {
+            "key": "description",
+            "name": "Description"
+        },
+        {
+            "key": "quantity",
+            "name": "Quantity"
+        },
+        {
+            "key": "weight",
+            "name": "Weight"
+        },
+        {
+            "key": "square_footage",
+            "name": "Square Footage"
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include './universal/standard_page.html' %}
+        {% include './universal/bootstrap_head.html' %}
+
+        <title>Freight loading helper tool thing</title>
+
+        {% include './navigation/navbar_head.html' %}
+    </head>
+    <body>
+        {% include './navigation/navbar.html' %}
+
+        <h1 class="text-center">Generate Layout</h1>
+
+        <div class="col d-flex flex-column justify-content-center align-items-center">
+            <a href="{{ url_for('landing_page') }}" class="btn btn-primary m-5">Back to home</a>
+        </div>
+
+        {% include './navigation/footer.html' %}
+    </body>
+</html>

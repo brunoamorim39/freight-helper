@@ -1,0 +1,43 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+/* Disables highlighting of text or images by the user */
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+@font-face {
+    font-family: "Archivo Black";
+    src: url('../assets/fonts/ArchivoBlack-Regular.ttf') format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Sen Regular";
+    src: url('../assets/fonts/Sen-Regular.ttf') format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Sen Bold";
+    src: url('../assets/fonts/Sen-Bold.ttf') format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Sen Extra Bold";
+    src: url('../assets/fonts/Sen-ExtraBold.ttf') format('truetype');
+    font-display: swap;
+}
+
+body {
+    min-height: 100vh;
+}

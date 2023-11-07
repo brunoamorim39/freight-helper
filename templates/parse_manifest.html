@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include './universal/standard_page.html' %}
+        {% include './universal/bootstrap_head.html' %}
+
+        <title>Freight loading helper tool thing</title>
+
+        {% include './navigation/navbar_head.html' %}
+    </head>
+    <body>
+        {% include './navigation/navbar.html' %}
+
+        <h1 class="text-center">Parse Manifest</h1>
+
+        <div class="col d-flex flex-column justify-content-center align-items-center">
+            <a href="{{ url_for('landing_page') }}" class="btn btn-primary m-5">Back to home</a>
+        </div>
+
+        <div class="col-3 mx-auto">
+            <form method="POST" action="" enctype="multipart/form-data" class="d-flex mx-auto">
+                {{ upload_form.csrf_token }}
+                {{ upload_form.file(class_='form-control m-3') }}
+                {{ upload_form.submit(class_='btn btn-outline-primary m-3') }}
+            </form>
+        </div>
+
+        <div class="col-4 mx-auto mt-5">
+            <h3>Uploaded manifests</h3>
+            {% for manifest in manifests %}
+                <div class="d-flex justify-content-between">
+                    {{ manifest }}
+                    <a href="{{ url_for('parse_manifest') }}?manifest={{ manifest }}" class="btn btn-outline-primary">Select</a>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if manifest_params and manifest_column_names and not manifest_map %}
+            <div class="col-4 card mx-auto mt-5">
+                <div class="card-header d-flex justify-content-between">
+                    <div class="col-auto fs-4 fw-bold">Key Parameters</div>
+                    <div class="col-auto fs-4 fw-bold">Columns</div>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="">
+                        {% for param in manifest_params %}
+                            <div class="d-flex justify-content-between m-3">
+                                <div class="col-auto">
+                                    <label class="form-label" for="{{ param.key }}">{{ param.name }}</label>
+                                </div>
+                                <div class="col-auto">
+                                    <select class="form-control" id="{{ param.key }}" name="{{ param.key }}" aria-label="{{ param.name }}">
+                                        {% for column_name in manifest_column_names %}
+                                            <option>{{ column_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="col d-flex justify-content-end m-3">
+                            <button class="btn btn-outline-primary">Save mapping</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if selected_manifest_details %}
+            <div class="col-6 card mx-auto mt-5">
+                <h3 class="card-header">Selected manifest: {{ request.args.get('manifest') }}</h3>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Stop Number</th>
+                                <th scope="col">Product Description</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Weight</th>
+                                <th scope="col">Square Footage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in selected_manifest_details %}
+                                <tr>
+                                    <th scope="row">{{ item.stop_number }}</th>
+                                    <td>{{ item.description }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>{{ item.weight }}</td>
+                                    <td>{{ item.square_footage }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+
+        {% include './navigation/footer.html' %}
+    </body>
+</html>
