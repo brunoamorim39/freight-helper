@@ -2,10 +2,46 @@
 Blueprints any and all forms that can be used throughout the application
 '''
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, PasswordField, StringField, SubmitField, URLField, FileField
-from wtforms.validators import Email, URL, EqualTo, InputRequired, Length, Regexp, ValidationError, DataRequired
+from wtforms import BooleanField, PasswordField, StringField, SubmitField, URLField, FileField, IntegerField, DecimalField
+from wtforms.validators import Email, URL, EqualTo, InputRequired, Length, Regexp, ValidationError, DataRequired, NumberRange
 
 from __init__ import dynamodb
+
+class TruckForm(FlaskForm):
+    '''
+    Form for configuring a truck layout
+    '''
+    name = StringField(label='Truck name',
+        validators=[
+            DataRequired(),
+            Length(min=3, max=64, message='Truck name must be between 3 and 64 characters.')
+        ]
+    )
+    interior_length = DecimalField(label='Interior length (ft)',
+        places=2,
+        validators=[
+            DataRequired(),
+        ]
+    )
+    interior_width = DecimalField(label='Interior width (ft)',
+        places=2,
+        validators=[
+            DataRequired(),
+        ]
+    )
+    interior_height = DecimalField(label='Interior height (ft)',
+        places=2,
+        validators=[
+            DataRequired(),
+        ]
+    )
+    interior_rack_quantity = IntegerField(label='Number of interior racks',
+        validators=[
+            DataRequired(),
+            NumberRange(min=0, max=None, message='Quantity of racks must be greater than or equal to zero.')
+        ]
+    )
+    
 
 class UploadForm(FlaskForm):
     '''

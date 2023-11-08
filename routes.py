@@ -50,7 +50,11 @@ def configure_trucks():
     if request.method == 'POST':
         return
     if request.method == 'GET':
-        return render_template('configure_trucks.html')
+        selected_truck = request.args.get('truck', default=None, type=str)
+
+        return render_template('configure_trucks.html',
+            selected_truck=selected_truck
+        )
     return _404('invalid method')
 
 @app.route('/parse-manifest', methods=['GET', 'POST'])
