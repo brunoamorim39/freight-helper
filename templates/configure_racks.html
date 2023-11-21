@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+{% import "macros.html" as macros %}
+<html>
+    <head>
+        {% include './universal/standard_page.html' %}
+        {% include './universal/bootstrap_head.html' %}
+
+        <title>Freight loading helper tool thing</title>
+
+        {% include './navigation/navbar_head.html' %}
+    </head>
+    <body>
+        {% include './navigation/navbar.html' %}
+
+        <h1 class="text-center">Configure racks</h1>
+
+        <div class="col d-flex flex-column justify-content-center align-items-center">
+            <a href="{{ url_for('landing_page') }}" class="btn btn-primary m-5">Back to home</a>
+        </div>
+
+        <div class="col-3 mx-auto">
+            <h4>Available racks:</h4>
+            {% for rack in racks['racks'] %}
+                <div class="d-flex justify-content-between">
+                    <h5>{{ rack }}</h5>
+                    <div>
+                        <a href="{{ url_for('configure_racks') }}?rack={{ rack }}&edit_mode=True">
+                            <button class="btn btn-primary" type="submit">
+                                Edit rack
+                            </button>
+                        </a>
+                        <a href="{{ url_for('configure_racks') }}?rack={{ rack }}">
+                            <button class="btn btn-primary" type="submit">
+                                Select rack
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if selected_rack %}
+            <div class="col-3 mx-auto">
+                <h4>Selected rack: {{ rack_data['name'] }}</h4>
+                <div>{{ rack_data }}</div>
+            </div>
+        {% endif %}
+
+        {% if request.args.get('edit_mode') or not selected_rack %}
+            <div class="col-3 mx-auto">
+                <form method="POST" action="" class="mx-auto">
+                    {{ rack_form.csrf_token }}
+
+                    {{ rack_form.rack_name.label(class_='form-label') }}
+                    {{ rack_form.rack_name(class_='form-control') }}
+
+                    {{ rack_form.rack_length.label(class_='form-label') }}
+                    {{ rack_form.rack_length(class_='form-control') }}
+
+                    {{ rack_form.rack_depth.label(class_='form-label') }}
+                    {{ rack_form.rack_depth(class_='form-control') }}
+
+                    {{ rack_form.rack_height.label(class_='form-label') }}
+                    {{ rack_form.rack_height(class_='form-control') }}
+
+                    {{ rack_form.submit(class_='btn btn-primary mt-3') }}
+                </form>
+            </div>
+        {% endif %}
+
+        {% include './navigation/footer.html' %}
+    </body>
+</html>

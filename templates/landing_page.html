@@ -14,7 +14,9 @@
         <h1 class="text-center">Freight Helper Tool</h1>
 
         <div class="col d-flex flex-column justify-content-center align-items-center">
-            <a href="{{ url_for('configure_trucks') }}" class="btn btn-primary m-3">Configure truck presets</a>
+            <a href="{{ url_for('configure_trucks') }}" class="btn btn-primary m-3">Configure trucks</a>
+
+            <a href="{{ url_for('configure_racks') }}" class="btn btn-primary m-3">Configure racks</a>
 
             <a href="{{ url_for('parse_manifest') }}" class="btn btn-primary m-3">Upload and parse shipping manifest</a>
 

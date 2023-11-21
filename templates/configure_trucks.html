@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% import "macros.html" as macros %}
 <html>
     <head>
         {% include './universal/standard_page.html' %}
@@ -18,11 +19,62 @@
         </div>
 
         <div class="col-3 mx-auto">
-            <form method="POST" action="" class="d-flex mx-auto">
-                {{ truck_form.csrf_token }}
-                
-            </form>
+            <h4>Available trucks:</h4>
+            {% for truck in trucks['trucks'] %}
+                <div class="d-flex justify-content-between">
+                    <h5>{{ truck }}</h5>
+                    <div>
+                        <a href="{{ url_for('configure_trucks') }}?truck={{ truck }}&edit_mode=True">
+                            <button class="btn btn-primary" type="submit">
+                                Edit truck
+                            </button>
+                        </a>
+                        <a href="{{ url_for('configure_trucks') }}?truck={{ truck }}">
+                            <button class="btn btn-primary" type="submit">
+                                Select truck
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
+
+        {% if selected_truck %}
+            <div class="col-3 mx-auto">
+                <h4>Selected truck: {{ truck_data['name'] }}</h4>
+                <div>{{ truck_data }}</div>
+            </div>
+        {% endif %}
+
+        {% if request.args.get('edit_mode') or not selected_truck %}
+            <div class="col-3 mx-auto">
+                <form method="POST" action="" class="mx-auto">
+                    {{ truck_form.csrf_token }}
+
+                    {{ truck_form.truck_name.label(class_='form-label') }}
+                    {{ truck_form.truck_name(class_='form-control') }}
+
+                    {{ truck_form.interior_length.label(class_='form-label') }}
+                    {{ truck_form.interior_length(class_='form-control') }}
+
+                    {{ truck_form.interior_width.label(class_='form-label') }}
+                    {{ truck_form.interior_width(class_='form-control') }}
+
+                    {{ truck_form.interior_height.label(class_='form-label') }}
+                    {{ truck_form.interior_height(class_='form-control') }}
+
+                    {{ truck_form.distance_to_rear_axle_from_cab.label(class_='form-label') }}
+                    {{ truck_form.distance_to_rear_axle_from_cab(class_='form-control') }}
+
+                    <div class="form-check">
+                        {{ truck_form.exterior_racks.label(class_='form-check-label') }}
+                        {{ truck_form.exterior_racks(class_='form-check-input') }}
+                    </div>
+
+                    {{ truck_form.submit(class_='btn btn-primary') }}
+                </form>
+            </div>
+        {% endif %}
 
         {% include './navigation/footer.html' %}
     </body>

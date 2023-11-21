@@ -3,6 +3,7 @@ Utility functions for use with the freight helper tool.
 '''
 import csv
 import json
+import os
 
 ALLOWED_EXTENSIONS = {'csv', 'xslx', 'ods'}
 
@@ -70,3 +71,17 @@ def analyze_manifest(manifest_name, manifest_map):
         
     manifest_details.sort(key=lambda x: x['stop_number'])
     return manifest_details
+
+def save_truck(truck_obj):
+    with open(f"./resources/trucks/{truck_obj['name']}", 'w', encoding='utf-8') as truckfile:
+        truckfile.write(json.dumps(truck_obj))
+
+def delete_truck(truck_obj):
+    os.remove(f"./resources/trucks/{truck_obj['name']}")
+
+def save_rack(rack_obj):
+    with open(f"./resources/racks/{rack_obj['name']}", 'w', encoding='utf-8') as rackfile:
+        rackfile.write(json.dumps(rack_obj))
+
+def delete_rack(rack_obj):
+    os.remove(f"./resources/racks/{rack_obj['name']}")
