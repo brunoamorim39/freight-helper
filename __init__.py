@@ -27,6 +27,10 @@ with open('./config/app_config.json', encoding='utf-8') as config_file:
 
 app.config['SECRET_KEY'] = app_config.get('SECRET_KEY')
 
+app.config['TRUCK_PATH'] = app_config.get('TRUCK_PATH')
+app.config['RACK_PATH'] = app_config.get('RACK_PATH')
+app.config['MANIFEST_PATH'] = app_config.get('MANIFEST_PATH')
+
 # login_manager = LoginManager()
 # login_manager.session_protection = 'strong'
 # login_manager.login_view = 'login'

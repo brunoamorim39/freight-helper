@@ -20,7 +20,7 @@ def get_manifest_params():
 
 def get_manifest_column_names(manifest_name):
     manifest_column_names = []
-    with open(f'./uploads/manifests/{manifest_name}.csv', 'r', encoding='utf-8', newline='') as csvfile:
+    with open(f'./resources/manifests/{manifest_name}.csv', 'r', encoding='utf-8', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             for column_name in row:
@@ -56,7 +56,7 @@ def analyze_manifest(manifest_name, manifest_map):
     Analyzes the selected manifest to determine the details for the shipment for later use in optimization.
     '''
     manifest_details = []
-    with open(f'./uploads/manifests/{manifest_name}.csv', 'r', encoding='utf-8', newline='') as csvfile:
+    with open(f'./resources/manifests/{manifest_name}.csv', 'r', encoding='utf-8', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             manifest_details.append(
@@ -85,3 +85,9 @@ def save_rack(rack_obj):
 
 def delete_rack(rack_obj):
     os.remove(f"./resources/racks/{rack_obj['name']}")
+
+def generate_truck_layout(truck_details, racks_details, manifest_details):
+    print(truck_details)
+    print(racks_details)
+    print(manifest_details)
+    return layout

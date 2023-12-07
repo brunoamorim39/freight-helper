@@ -3,6 +3,7 @@
     <head>
         {% include './universal/standard_page.html' %}
         {% include './universal/bootstrap_head.html' %}
+        {% include './universal/htmx_head.html' %}
 
         <title>Freight loading helper tool thing</title>
 
@@ -17,6 +18,68 @@
             <a href="{{ url_for('landing_page') }}" class="btn btn-primary m-5">Back to home</a>
         </div>
 
+        <div class="container d-flex">
+            <div class="col-4 px-3">
+                <div class="fs-4">Select a truck</div>
+                {% for truck in trucks.trucks %}
+                    <div class="d-flex justify-content-between">
+                        <label for="{{ truck }}">{{ truck }}</label>
+                        {% if trucks.selected_truck == truck %}
+                            <button class="btn btn-primary" id="{{ truck }}" disabled>
+                                Selected
+                            </button>
+                        {% else %}
+                            <button class="truck-button btn btn-outline-primary" id="{{ truck }}" onclick="selectTruck(this)">
+                                Select
+                            </button>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="col-4 px-3">
+                <div class="fs-4">Select a rack</div>
+                {% for rack in racks.racks %}
+                    <div class="d-flex form-check">
+                        <input class="rack-checkbox form-check-input me-3" type="checkbox" value="" id="{{ rack }}" {% if rack in racks.selected_racks %}checked{% endif %}>
+                        <label class="form-check-label" for="{{ rack }}">
+                            {{ rack }}
+                        </label>
+                    </div>
+                {% endfor %}
+                <button class="btn btn-outline-primary" onclick="selectRacks(this)">Apply</button>
+            </div>
+
+            <div class="col-4 px-3">
+                <div class="fs-4">Select a manifest</div>
+                {% for manifest in manifests.manifests %}
+                    <div class="d-flex justify-content-between">
+                        <label for="{{ manifest }}">{{ manifest }}</label>
+                        {% if manifests.selected_manifest == manifest %}
+                            <button class="btn btn-primary" id="{{ manifest }}" disabled>
+                                Selected
+                            </button>
+                        {% else %}
+                            <button class="manifest-button btn btn-outline-primary" id="{{ manifest }}" onclick="selectManifest(this)">
+                                Select
+                            </button>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="container d-flex justify-content-center mt-5">
+            <button class="btn btn-primary"
+                hx-post="{{ url_for('generate_layout', truck=trucks.selected_truck, racks=racks.selected_racks, manifest=manifests.selected_manifest) }}"
+                hx-swap="outerHTML"
+            >
+                Generate layout
+            </button>
+        </div>
+
         {% include './navigation/footer.html' %}
     </body>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}" data-pagespeed-no-defer></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/generate_layout.js') }}" data-pagespeed-no-defer></script>
 </html>
