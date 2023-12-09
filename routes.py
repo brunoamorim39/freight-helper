@@ -190,21 +190,24 @@ def generate_layout():
     '''
     Route for generating a truck layout
     '''
+    selected_truck = request.args.get('truck', default=None, type=str)
+    selected_racks = request.args.get('racks', default=None, type=str)
+    selected_manifest = request.args.get('manifest', default=None, type=str)
+    
     if request.method == 'GET':
-        selected_truck = urllib.parse.unquote(request.args.get('truck', default=None, type=str))
-        selected_racks = urllib.parse.unquote(request.args.get('racks', default=None, type=str))
-        selected_manifest = urllib.parse.unquote(request.args.get('manifest', default=None, type=str))[1:-1]
-
         trucks = api.truck_api_get_all_trucks()
         if selected_truck:
+            selected_truck = eval(urllib.parse.unquote(selected_truck))
             trucks['selected_truck'] = selected_truck
 
         racks = api.rack_api_get_all_racks()
         if selected_racks:
+            selected_racks = eval(urllib.parse.unquote(selected_racks))
             racks['selected_racks'] = selected_racks
 
         manifests = api.manifest_api_get_all_manifests()
         if selected_manifest:
+            selected_manifest = eval(urllib.parse.unquote(selected_manifest))
             manifests['selected_manifest'] = selected_manifest
         for idx, manifest in enumerate(manifests['manifests']):
             manifests['manifests'][idx] = manifest.split('\\')[-1].split('.')[0]
@@ -215,14 +218,11 @@ def generate_layout():
             manifests=manifests
         )
     if request.method == 'POST':
-        selected_truck = urllib.parse.unquote(request.args.get('truck', default=None, type=str))
-        selected_racks = urllib.parse.unquote(request.args.get('racks', default=None, type=str))
-        selected_manifest = urllib.parse.unquote(request.args.get('manifest', default=None, type=str))
-
         truck_details = api.truck_api_get_truck(selected_truck)
 
+        selected_racks = request.args.getlist('racks')
         racks_details = []
-        for rack in eval(selected_racks):
+        for rack in selected_racks:
             racks_details.append(api.rack_api_get_rack(rack))
 
         manifest_map = utils.get_manifest_map(selected_manifest)

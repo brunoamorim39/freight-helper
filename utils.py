@@ -7,6 +7,16 @@ import os
 
 ALLOWED_EXTENSIONS = {'csv', 'xslx', 'ods'}
 
+def unit_convert(from_unit, to_unit, val):
+    '''
+    Takes an object key and converts the value of it from a specific unit to a specific unit
+    '''
+    val = float(val)
+    if from_unit == 'inches' and to_unit == 'feet':
+        return val / 12
+    elif from_unit == 'feet' and to_unit == 'inches':
+        return val * 12
+
 def allowed_file(filename):
     '''
     Determines whether the file being uploaded is of an acceptable extension.
@@ -88,6 +98,20 @@ def delete_rack(rack_obj):
 
 def generate_truck_layout(truck_details, racks_details, manifest_details):
     print(truck_details)
+    # print(racks_details)
+    # print(manifest_details)
+
+    widest_rack = ''
+    for rack in racks_details:
+        rack['rack_length'] = unit_convert(from_unit='inches', to_unit='feet', val=rack['rack_length'])
+        rack['rack_depth'] = unit_convert(from_unit='inches', to_unit='feet', val=rack['rack_depth'])
+        rack['rack_height'] = unit_convert(from_unit='inches', to_unit='feet', val=rack['rack_height'])
+
+        widest_rack_position = next((idx for idx, rack in enumerate(racks_details) if rack['name'] == widest_rack), None)
+        if widest_rack_position is None or rack['rack_depth'] > racks_details[widest_rack_position]['rack_depth']:
+            widest_rack = rack['name']
+    
     print(racks_details)
-    print(manifest_details)
+    print(widest_rack)
+
     return layout

@@ -5,7 +5,6 @@ from __init__ import app, dynamodb
 
 @app.route('/api/trucks', methods=['GET'])
 def truck_api_get_all_trucks():
-    print(app.config)
     return {"trucks": os.listdir(app.config['TRUCK_PATH'])}
 
 @app.route('/api/trucks', methods=['POST'])
