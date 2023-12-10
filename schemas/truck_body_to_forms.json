@@ -1,0 +1,7 @@
+{
+    "van": "TruckVanForm",
+    "open_glass_rack": "TruckOpenGlassRackForm",
+    "enclosed": "TruckEnclosedForm",
+    "trailer": "TruckTrailerForm",
+    "flatbed": "TruckFlatbedForm"
+}

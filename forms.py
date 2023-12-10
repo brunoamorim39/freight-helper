@@ -14,7 +14,7 @@ class TruckForm(FlaskForm):
     truck_body_type = SelectField(
         label='Truck body type',
         choices=[
-            ('default', '-- Select a body type --', {'disabled': True, 'hidden': True}),
+            ('default', '-- Select a body type --', {'disabled': True}),
             ('van', 'Van'),
             ('open_glass_rack', 'Open Body'),
             ('enclosed', 'Enclosed'),
@@ -26,10 +26,7 @@ class TruckForm(FlaskForm):
             InputRequired()
         ]
     )
-    integrated_racks = BooleanField(
-        label='Truck has racks directly integrated with truck body',
-    )
-    distance_to_rear_axle_from_cab = DecimalField(
+    distance_to_rear_axle = DecimalField(
         label='Distance to rear axle from cab (ft)',
         places=2,
         validators=[
@@ -45,7 +42,7 @@ class TruckForm(FlaskForm):
         label='Create truck'
     )
 
-class TruckOpenBodyForm(FlaskForm):
+class TruckOpenGlassRackForm(FlaskForm):
     truck_name = StringField(
         label='Truck name',
         validators=[
@@ -94,7 +91,15 @@ class TruckOpenBodyForm(FlaskForm):
         ]
     )
     exterior_rack_quantity = IntegerField(
-        label='Number of exterior rack sections ()'
+        label='Number of exterior rack sections',
+        validators=[
+            InputRequired(),
+            NumberRange(
+                min=0,
+                max=None,
+                message='Rack quantity must be equal to or greater than zero.'
+            )
+        ]
     )
 
 

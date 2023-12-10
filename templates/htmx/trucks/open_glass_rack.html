@@ -1,0 +1,18 @@
+<div id="truck-interior-info">
+    {{ form.csrf_token }}
+    
+    {{ form.truck_name.label(class_='form-label') }}
+    {{ form.truck_name(class_='form-control') }}
+
+    {{ form.interior_rack_length.label(class_='form-label') }}
+    {{ form.interior_rack_length(class_='form-control') }}
+
+    {{ form.interior_rack_width.label(class_='form-label') }}
+    {{ form.interior_rack_width(class_='form-control') }}
+
+    {{ form.interior_rack_height.label(class_='form-label') }}
+    {{ form.interior_rack_height(class_='form-control') }}
+
+    {{ form.exterior_rack_quantity.label(class_='form-label') }}
+    {{ form.exterior_rack_quantity(class_='form-control') }}
+</div>
