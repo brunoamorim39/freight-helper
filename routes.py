@@ -13,9 +13,7 @@ import requests
 from werkzeug.utils import secure_filename
 
 from __init__ import app, dynamodb
-import api
-import utils
-import errors
+import api, htmx_api, utils, errors
 from models import User
 from forms import TruckForm, RackForm, UploadForm
 from emails import send_creation_confirmation_email, send_password_reset_email
@@ -83,7 +81,7 @@ def configure_trucks():
                 "interior_width": request.form.get('interior_width'),
                 "interior_height": request.form.get('interior_height'),
                 "distance_to_rear_axle_from_cab": request.form.get('distance_to_rear_axle_from_cab'),
-                "exterior_rack_capability": request.form.get('exterior_racks')
+                "integrated_racks": request.form.get('integrated_racks')
             }
             utils.save_truck(truck_obj)
 

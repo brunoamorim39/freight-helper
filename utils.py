@@ -114,4 +114,8 @@ def generate_truck_layout(truck_details, racks_details, manifest_details):
     print(racks_details)
     print(widest_rack)
 
+    # Split the truck up into a grid based on the depth of the widest rack
+    lane_size = racks_details[widest_rack]['rack_depth']
+    
+    
     return layout

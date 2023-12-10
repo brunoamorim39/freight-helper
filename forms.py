@@ -2,7 +2,7 @@
 Blueprints any and all forms that can be used throughout the application
 '''
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, PasswordField, StringField, SubmitField, URLField, FileField, IntegerField, DecimalField, FieldList, FormField
+from wtforms import SelectField, BooleanField, PasswordField, StringField, SubmitField, URLField, FileField, IntegerField, DecimalField, FieldList, FormField
 from wtforms.validators import Email, URL, EqualTo, InputRequired, Length, Regexp, ValidationError, DataRequired, NumberRange
 
 from __init__ import dynamodb
@@ -11,52 +11,23 @@ class TruckForm(FlaskForm):
     '''
     Form for configuring a truck layout
     '''
-    truck_name = StringField(
-        label='Truck name',
+    truck_body_type = SelectField(
+        label='Truck body type',
+        choices=[
+            ('default', '-- Select a body type --', {'disabled': True, 'hidden': True}),
+            ('van', 'Van'),
+            ('open_glass_rack', 'Open Body'),
+            ('enclosed', 'Enclosed'),
+            ('trailer', 'Trailer'),
+            ('flatbed', 'Flatbed')
+        ],
+        default='default',
         validators=[
-            DataRequired(),
-            Length(
-                min=3,
-                max=64,
-                message='Truck name must be between 3 and 64 characters.'
-            )
+            InputRequired()
         ]
     )
-    interior_length = DecimalField(
-        label='Interior length (ft)',
-        places=2,
-        validators=[
-            DataRequired(),
-            NumberRange(
-                min=0,
-                max=None,
-                message='Interior length must be greater than or equal to zero.'
-            )
-        ]
-    )
-    interior_width = DecimalField(
-        label='Interior width (ft)',
-        places=2,
-        validators=[
-            DataRequired(),
-            NumberRange(
-                min=0,
-                max=None,
-                message='Interior width must be greater than or equal to zero.'
-            )
-        ]
-    )
-    interior_height = DecimalField(
-        label='Interior height (ft)',
-        places=2,
-        validators=[
-            DataRequired(),
-            NumberRange(
-                min=0,
-                max=None,
-                message='Interior height must be greater than or equal to zero.'
-            )
-        ]
+    integrated_racks = BooleanField(
+        label='Truck has racks directly integrated with truck body',
     )
     distance_to_rear_axle_from_cab = DecimalField(
         label='Distance to rear axle from cab (ft)',
@@ -70,12 +41,62 @@ class TruckForm(FlaskForm):
             )
         ]
     )
-    exterior_racks = BooleanField(
-        label='Truck has capability to mount exterior racks',
-    )
     submit = SubmitField(
         label='Create truck'
     )
+
+class TruckOpenBodyForm(FlaskForm):
+    truck_name = StringField(
+        label='Truck name',
+        validators=[
+            DataRequired(),
+            Length(
+                min=3,
+                max=64,
+                message='Truck name must be between 3 and 64 characters.'
+            )
+        ]
+    )
+    interior_rack_length = DecimalField(
+        label='Interior length (ft)',
+        places=2,
+        validators=[
+            DataRequired(),
+            NumberRange(
+                min=0,
+                max=None,
+                message='Interior length must be greater than or equal to zero.'
+            )
+        ]
+    )
+    interior_rack_width = DecimalField(
+        label='Interior width (ft)',
+        places=2,
+        validators=[
+            DataRequired(),
+            NumberRange(
+                min=0,
+                max=None,
+                message='Interior width must be greater than or equal to zero.'
+            )
+        ]
+    )
+    interior_rack_height = DecimalField(
+        label='Interior height (ft)',
+        places=2,
+        validators=[
+            DataRequired(),
+            NumberRange(
+                min=0,
+                max=None,
+                message='Interior height must be greater than or equal to zero.'
+            )
+        ]
+    )
+    exterior_rack_quantity = IntegerField(
+        label='Number of exterior rack sections ()'
+    )
+
 
 class RackForm(FlaskForm):
     '''

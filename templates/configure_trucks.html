@@ -51,7 +51,20 @@
                 <form method="POST" action="" class="mx-auto">
                     {{ truck_form.csrf_token }}
 
-                    {{ truck_form.truck_name.label(class_='form-label') }}
+                    {{ truck_form.truck_body_type.label(class_='form-label') }}
+                    {{ truck_form.truck_body_type(
+                        id='truck-body-type-select',
+                        class_='form-select',
+                        **{
+                            'hx-get': url_for('truck_form_get_body_type_options'),
+                            'hx-swap': 'afterend'
+                        }) 
+                    }}
+
+                    <div id="truck-interior-info"></div>
+                    <div id="truck-exterior-info"></div>
+
+                    <!-- {{ truck_form.truck_name.label(class_='form-label') }}
                     {{ truck_form.truck_name(class_='form-control') }}
 
                     {{ truck_form.interior_length.label(class_='form-label') }}
@@ -67,15 +80,17 @@
                     {{ truck_form.distance_to_rear_axle_from_cab(class_='form-control') }}
 
                     <div class="form-check">
-                        {{ truck_form.exterior_racks.label(class_='form-check-label') }}
-                        {{ truck_form.exterior_racks(class_='form-check-input') }}
+                        {{ truck_form.integrated_racks.label(class_='form-check-label') }}
+                        {{ truck_form.integrated_racks(class_='form-check-input') }}
                     </div>
 
-                    {{ truck_form.submit(class_='btn btn-primary') }}
+                    {{ truck_form.submit(class_='btn btn-primary') }} -->
                 </form>
             </div>
         {% endif %}
 
         {% include './navigation/footer.html' %}
     </body>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}" data-pagespeed-no-defer></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/configure_trucks.js') }}" data-pagespeed-no-defer></script>
 </html>
