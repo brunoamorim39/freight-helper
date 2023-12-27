@@ -75,7 +75,10 @@ def analyze_manifest(manifest_name, manifest_map):
                     "description": row[manifest_map['description']],
                     "quantity": row[manifest_map['quantity']],
                     "weight": row[manifest_map['weight']],
-                    "square_footage": row[manifest_map['square_footage']]
+                    "square_footage": row[manifest_map['square_footage']],
+                    "length": row[manifest_map['length']],
+                    "width": row[manifest_map['width']],
+                    "thickness": row[manifest_map['thickness']]
                 }
             )
         
@@ -83,7 +86,7 @@ def analyze_manifest(manifest_name, manifest_map):
     return manifest_details
 
 def save_truck(truck_obj):
-    with open(f"./resources/trucks/{truck_obj['name']}", 'w', encoding='utf-8') as truckfile:
+    with open(f"./resources/trucks/{truck_obj['truck_name']}", 'w', encoding='utf-8') as truckfile:
         truckfile.write(json.dumps(truck_obj))
 
 def delete_truck(truck_obj):
@@ -96,26 +99,37 @@ def save_rack(rack_obj):
 def delete_rack(rack_obj):
     os.remove(f"./resources/racks/{rack_obj['name']}")
 
-def generate_truck_layout(truck_details, racks_details, manifest_details):
+def generate_truck_layout(truck_details, manifest_details):
     print(truck_details)
     # print(racks_details)
     # print(manifest_details)
 
-    widest_rack = ''
-    for rack in racks_details:
-        rack['rack_length'] = unit_convert(from_unit='inches', to_unit='feet', val=rack['rack_length'])
-        rack['rack_depth'] = unit_convert(from_unit='inches', to_unit='feet', val=rack['rack_depth'])
-        rack['rack_height'] = unit_convert(from_unit='inches', to_unit='feet', val=rack['rack_height'])
+    # widest_rack = ''
+    # for rack in racks_details:
+    #     rack['rack_length'] = unit_convert(from_unit='inches', to_unit='feet', val=rack['rack_length'])
+    #     rack['rack_depth'] = unit_convert(from_unit='inches', to_unit='feet', val=rack['rack_depth'])
+    #     rack['rack_height'] = unit_convert(from_unit='inches', to_unit='feet', val=rack['rack_height'])
 
-        widest_rack_position = next((idx for idx, rack in enumerate(racks_details) if rack['name'] == widest_rack), None)
-        if widest_rack_position is None or rack['rack_depth'] > racks_details[widest_rack_position]['rack_depth']:
-            widest_rack = rack['name']
+    #     widest_rack_position = next((idx for idx, rack in enumerate(racks_details) if rack['name'] == widest_rack), None)
+    #     if widest_rack_position is None or rack['rack_depth'] > racks_details[widest_rack_position]['rack_depth']:
+    #         widest_rack = rack['name']
     
-    print(racks_details)
-    print(widest_rack)
+    # print(racks_details)
+    # print(widest_rack)
 
     # Split the truck up into a grid based on the depth of the widest rack
-    lane_size = racks_details[widest_rack]['rack_depth']
+    # lane_size = racks_details[widest_rack]['rack_depth']
     
+    total_interior_rack_volume = 2 * (truck_details['interior_rack_length'] * truck_details['interior_rack_depth'] * truck_details['interior_rack_height'])
+
+    total_exterior_rack_volume = 0
+    for rack in truck_details['exterior_rack_info']:
+        total_exterior_rack_volume += (rack['exterior_rack_length'] * rack['exterior_rack_depth'] * rack['exterior_rack_height'])
+    total_exterior_rack_volume = total_exterior_rack_volume * 2
     
+    print(total_interior_rack_volume)
+    print(total_exterior_rack_volume)
+
+    for item in manifest_details:
+        print(item)
     return layout

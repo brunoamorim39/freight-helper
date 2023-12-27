@@ -19,6 +19,18 @@
         {
             "key": "square_footage",
             "name": "Square Footage"
+        },
+        {
+            "key": "length",
+            "name": "Length"
+        },
+        {
+            "key": "width",
+            "name": "Width"
+        },
+        {
+            "key": "thickness",
+            "name": "Thickness"
         }
     ]
 }

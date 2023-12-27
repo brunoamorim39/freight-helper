@@ -47,7 +47,7 @@
         {% endif %}
 
         {% if request.args.get('edit_mode') or not selected_truck %}
-            <div class="col-3 mx-auto">
+            <div class="col-6 mx-auto">
                 <form method="POST" action="" class="mx-auto">
                     {{ truck_form.csrf_token }}
 
@@ -63,7 +63,9 @@
                     }}
 
                     <div id="truck-interior-info"></div>
-                    <div id="truck-exterior-info"></div>
+                    <div id="truck-exterior-rack-info"></div>
+
+                    {{ truck_form.submit_truck_create(class_='btn btn-primary') }}
                 </form>
             </div>
         {% endif %}

@@ -2,7 +2,7 @@
 Blueprints any and all forms that can be used throughout the application
 '''
 from flask_wtf import FlaskForm
-from wtforms import SelectField, BooleanField, PasswordField, StringField, SubmitField, URLField, FileField, IntegerField, DecimalField, FieldList, FormField
+from wtforms import HiddenField, SelectField, BooleanField, PasswordField, StringField, SubmitField, URLField, FileField, IntegerField, DecimalField, FieldList, FormField
 from wtforms.validators import Email, URL, EqualTo, InputRequired, Length, Regexp, ValidationError, DataRequired, NumberRange
 
 from __init__ import dynamodb
@@ -14,7 +14,7 @@ class TruckForm(FlaskForm):
     truck_body_type = SelectField(
         label='Truck body type',
         choices=[
-            ('default', '-- Select a body type --', {'disabled': True}),
+            ('default', 'Open to select a body type', {'disabled': True}),
             ('van', 'Van'),
             ('open_glass_rack', 'Open Body'),
             ('enclosed', 'Enclosed'),
@@ -26,19 +26,7 @@ class TruckForm(FlaskForm):
             InputRequired()
         ]
     )
-    distance_to_rear_axle = DecimalField(
-        label='Distance to rear axle from cab (ft)',
-        places=2,
-        validators=[
-            DataRequired(),
-            NumberRange(
-                min=0,
-                max=None,
-                message='Distance to rear axle must be greater than or equal to zero.'
-            )
-        ]
-    )
-    submit = SubmitField(
+    submit_truck_create = SubmitField(
         label='Create truck'
     )
 
@@ -54,39 +42,51 @@ class TruckOpenGlassRackForm(FlaskForm):
             )
         ]
     )
-    interior_rack_length = DecimalField(
-        label='Interior length (ft)',
+    distance_to_rear_axle = DecimalField(
+        label='Distance from cab to rear axle (ft)',
         places=2,
         validators=[
             DataRequired(),
             NumberRange(
                 min=0,
                 max=None,
-                message='Interior length must be greater than or equal to zero.'
+                message='Distance to rear axle must be greater than or equal to zero.'
             )
         ]
     )
-    interior_rack_width = DecimalField(
-        label='Interior width (ft)',
+    interior_rack_length = DecimalField(
+        label='Length of interior racks (ft)',
         places=2,
         validators=[
             DataRequired(),
             NumberRange(
                 min=0,
                 max=None,
-                message='Interior width must be greater than or equal to zero.'
+                message='Interior rack length must be greater than or equal to zero.'
+            )
+        ]
+    )
+    interior_rack_depth = DecimalField(
+        label='Depth of interior racks (ft)',
+        places=2,
+        validators=[
+            DataRequired(),
+            NumberRange(
+                min=0,
+                max=None,
+                message='Interior rack depth must be greater than or equal to zero.'
             )
         ]
     )
     interior_rack_height = DecimalField(
-        label='Interior height (ft)',
+        label='Height of interior racks (ft)',
         places=2,
         validators=[
             DataRequired(),
             NumberRange(
                 min=0,
                 max=None,
-                message='Interior height must be greater than or equal to zero.'
+                message='Interior rack height must be greater than or equal to zero.'
             )
         ]
     )
@@ -102,6 +102,43 @@ class TruckOpenGlassRackForm(FlaskForm):
         ]
     )
 
+class TruckExteriorRackForm(FlaskForm):
+    exterior_rack_length = DecimalField(
+        label='Length of rack (ft)',
+        places=2,
+        validators=[
+            DataRequired(),
+            NumberRange(
+                min=0,
+                max=None,
+                message='Exterior rack length must be greater than or equal to zero.'
+            )
+        ]
+    )
+    exterior_rack_depth = DecimalField(
+        label='Depth of rack (ft)',
+        places=2,
+        validators=[
+            DataRequired(),
+            NumberRange(
+                min=0,
+                max=None,
+                message='Exterior rack depth must be greater than or equal to zero.'
+            )
+        ]
+    )
+    exterior_rack_height = DecimalField(
+        label='Height of rack (ft)',
+        places=2,
+        validators=[
+            DataRequired(),
+            NumberRange(
+                min=0,
+                max=None,
+                message='Exterior rack height must be greater than or equal to zero.'
+            )
+        ]
+    )
 
 class RackForm(FlaskForm):
     '''
