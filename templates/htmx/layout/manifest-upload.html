@@ -1,0 +1,23 @@
+<div id="select-a-manifest">
+    <div class="fs-4">Select a manifest</div>
+    <form class="d-flex mx-auto"
+        hx-post="{{ url_for('layout_form_post_manifest_upload') }}"
+        hx-swap="outerHTML"
+        hx-target="#describe-manifest"
+        hx-encoding="multipart/form-data"
+    >
+        {{ form.csrf_token }}
+        {{ form.file(class_='form-control me-3') }}
+        {{ form.upload(class_='btn btn-outline-primary ms-3') }}
+    </form>
+</div>
+
+{% if selected_manifest %}
+    <div
+        hx-get="{{ url_for('layout_form_get_describe_manifest') }}?{{ request.query_string.decode() }}"
+        hx-swap="outerHTML"
+        hx-target="#describe-manifest"
+        hx-trigger="load"
+    >
+    </div>
+{% endif %}

@@ -18,33 +18,30 @@
             <a href="{{ url_for('landing_page') }}" class="btn btn-primary m-5">Back to home</a>
         </div>
 
-        <div class="container d-flex">
-            <div class="col-4 px-3">
+        <div class="container d-flex justify-content-center py-3">
+            <div class="col-6">
                 <div class="fs-4">Select a truck</div>
-                {% for truck in trucks.trucks %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="{{ truck }}" id="{{ truck }}">
-                        <label class="form-check-label" for="{{ truck }}">{{ truck }}</label>
-                    </div>
-                {% endfor %}
+                <select class="form-select"
+                    hx-get="{{ url_for('layout_form_get_manifest_upload') }}?{{ request.query_string.decode() }}"
+                    hx-swap="outerHTML"
+                    hx-target="#select-a-manifest"
+                >
+                    <option selected disabled>Open to select a truck</option>
+                    {% for truck in trucks.trucks %}
+                        <option value="{{ truck }}">{{ truck }}</option>
+                    {% endfor %}
+                </select>
             </div>
+        </div>
+        <div class="container d-flex justify-content-center py-3">
+            <div class="col-6">
+                <div id="select-a-manifest"></div>
+            </div>
+        </div>
 
-            <div class="col-4 px-3">
-                <div class="fs-4">Select a manifest</div>
-                {% for manifest in manifests.manifests %}
-                    <div class="d-flex justify-content-between">
-                        <label for="{{ manifest }}">{{ manifest }}</label>
-                        {% if manifests.selected_manifest == manifest %}
-                            <button class="btn btn-primary" id="{{ manifest }}" disabled>
-                                Selected
-                            </button>
-                        {% else %}
-                            <button class="manifest-button btn btn-outline-primary" id="{{ manifest }}" onclick="selectManifest(this)">
-                                Select
-                            </button>
-                        {% endif %}
-                    </div>
-                {% endfor %}
+        <div class="container d-flex justify-content-center py-3">
+            <div class="col-6">
+                <div id="describe-manifest"></div>
             </div>
         </div>
 

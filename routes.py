@@ -82,7 +82,6 @@ def configure_trucks():
             trucks=trucks
         )
     if request.method == 'POST':
-
         if request.form.get('submit_truck_create'):
             truck_obj = {
                 "truck_name": request.form.get('truck_name'),
@@ -224,7 +223,7 @@ def generate_layout():
 
         manifests = api.manifest_api_get_all_manifests()
         if selected_manifest:
-            selected_manifest = eval(urllib.parse.unquote(selected_manifest))
+            # selected_manifest = eval(urllib.parse.unquote(selected_manifest))
             manifests['selected_manifest'] = selected_manifest
         for idx, manifest in enumerate(manifests['manifests']):
             manifests['manifests'][idx] = manifest.split('\\')[-1].split('.')[0]
@@ -232,7 +231,8 @@ def generate_layout():
         return render_template('generate_layout.html',
             trucks=trucks,
             racks=racks,
-            manifests=manifests
+            manifests=manifests,
+            selected_manifest=selected_manifest
         )
     if request.method == 'POST':
         truck_details = api.truck_api_get_truck(selected_truck)

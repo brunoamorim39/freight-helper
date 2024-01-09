@@ -1,0 +1,23 @@
+<div id="describe-manifest">
+    <h3 class="card-header">{{ manifest_name }}</h3>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    {% for param in manifest_params %}
+                        <th scope="col">{{ param.name }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in manifest_details %}
+                    <tr>
+                        {% for param in manifest_params %}
+                            <td>{{ item[param.key] }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

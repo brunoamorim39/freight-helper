@@ -200,7 +200,7 @@ class UploadForm(FlaskForm):
     Form for uploading a file
     '''
     file = FileField(label='File')
-    submit = SubmitField(label='Upload')
+    upload = SubmitField(label='Upload')
 
 class RegisterForm(FlaskForm):
     '''

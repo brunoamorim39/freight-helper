@@ -65,22 +65,20 @@ def analyze_manifest(manifest_name, manifest_map):
     '''
     Analyzes the selected manifest to determine the details for the shipment for later use in optimization.
     '''
+    manifest_params = get_manifest_params()
     manifest_details = []
     with open(f'./resources/manifests/{manifest_name}.csv', 'r', encoding='utf-8', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            manifest_details.append(
-                {
-                    "stop_number": row[manifest_map['stop_number']],
-                    "description": row[manifest_map['description']],
-                    "quantity": row[manifest_map['quantity']],
-                    "weight": row[manifest_map['weight']],
-                    "square_footage": row[manifest_map['square_footage']],
-                    "length": row[manifest_map['length']],
-                    "width": row[manifest_map['width']],
-                    "thickness": row[manifest_map['thickness']]
-                }
-            )
+            row_obj = {}
+            for param in manifest_params:
+                if manifest_map[param['key']] == 'NULL':
+                    row_obj[param['key']] = None
+                try:
+                    row_obj[param['key']] = row[manifest_map[param['key']]]
+                except KeyError:
+                    row_obj[param['key']] = None
+            manifest_details.append(row_obj)
         
     manifest_details.sort(key=lambda x: x['stop_number'])
     return manifest_details
