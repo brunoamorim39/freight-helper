@@ -1,0 +1,20 @@
+<div id="truck-interior-rack-info">
+    {% for form in forms %}
+        <div class="d-flex justify-content-around">            
+            <div>
+                {{ form.interior_rack_length.label(class_='form-label') }}
+                {{ form.interior_rack_length(class_='form-control') }}
+            </div>
+
+            <div>
+                {{ form.interior_rack_depth.label(class_='form-label') }}
+                {{ form.interior_rack_depth(class_='form-control') }}
+            </div>
+            
+            <div>
+                {{ form.interior_rack_height.label(class_='form-label') }}
+                {{ form.interior_rack_height(class_='form-control') }}
+            </div>
+        </div>
+    {% endfor %}
+</div>

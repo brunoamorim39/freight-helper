@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include './universal/standard_page.html' %}
+        {% include './universal/bootstrap_head.html' %}
+        {% include './universal/htmx_head.html' %}
+
+        <title>Freight loading helper tool thing</title>
+
+        {% include './navigation/navbar_head.html' %}
+
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/layout/layout.css') }}" />
+    </head>
+    <body>
+        {% include './navigation/navbar.html' %}
+
+        <h1 class="text-center">Generate Layout</h1>
+
+        <div class="col d-flex flex-column justify-content-center align-items-center my-3">
+            <a href="{{ url_for('landing_page') }}" class="btn btn-primary">Back to home</a>
+        </div>
+
+        <!-- <div id="main-content"> -->
+        <div>
+            <div class="container d-flex justify-content-center py-3">
+                <div class="col-6">
+                    <div class="fs-4">Select a truck</div>
+                    <select class="form-select" name="truck"
+                        hx-get="{{ url_for('layout_form_get_manifest_upload', truck=request.args.get('truck'), manifest=request.args.get('manifest')) }}"
+                        hx-swap="outerHTML"
+                        hx-target="#select-a-manifest"
+                        hx-on::after-request="const url = new URL(location);url.searchParams.set('truck', encodeURIComponent(this.value));history.pushState({}, '', url);"
+                        {% if selected_truck %}
+                            hx-trigger="load"
+                        {% endif %}
+                    >
+                        <option disabled 
+                            {% if not selected_truck %}
+                                selected
+                            {% endif %}
+                        >
+                            Open to select a truck
+                        </option>
+                        {% for truck in trucks.trucks %}
+                            <option 
+                                name="{{ truck }}"
+                                value="{{ truck }}"
+                                {% if selected_truck and selected_truck == truck %} 
+                                    selected
+                                {% endif %}
+                            >
+                                {{ truck }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="container d-flex justify-content-center py-3">
+                <div id="select-a-manifest" class="col-6"></div>
+            </div>
+
+            <div class="container d-flex justify-content-center py-3">
+                <div id="describe-manifest" class="col-6"></div>
+            </div>
+        </div>
+
+        <div id="main-content"></div>
+
+        {% include './navigation/footer.html' %}
+    </body>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}" data-pagespeed-no-defer></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/layout.js') }}" data-pagespeed-no-defer></script>
+</html>

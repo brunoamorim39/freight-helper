@@ -68,9 +68,7 @@ def configure_trucks():
                 truck_form.truck_body_type.data = truck_response['truck_body_type']
                 body_type_form.truck_name.data = truck_response['truck_name']
                 body_type_form.distance_to_rear_axle.data = Decimal(truck_response['distance_to_rear_axle'])
-                body_type_form.interior_rack_length.data = Decimal(truck_response['interior_rack_length'])
-                body_type_form.interior_rack_depth.data = Decimal(truck_response['interior_rack_depth'])
-                body_type_form.interior_rack_height.data = Decimal(truck_response['interior_rack_height'])
+                body_type_form.interior_rack_quantity.data = int(truck_response['exterior_rack_quantity'])
                 body_type_form.exterior_rack_quantity.data = int(truck_response['exterior_rack_quantity'])
 
         trucks = api.truck_api_get_all_trucks()
@@ -83,23 +81,32 @@ def configure_trucks():
         )
     if request.method == 'POST':
         if request.form.get('submit_truck_create'):
+            print(request.form)
             truck_obj = {
-                "truck_name": request.form.get('truck_name'),
-                "truck_body_type": request.form.get('truck_body_type'),
-                "distance_to_rear_axle": float(request.form.get('distance_to_rear_axle')),
-                "interior_rack_length": float(request.form.get('interior_rack_length')),
-                "interior_rack_depth": float(request.form.get('interior_rack_depth')),
-                "interior_rack_height": float(request.form.get('interior_rack_height')),
-                "exterior_rack_quantity": int(request.form.get('exterior_rack_quantity')),
-                "exterior_rack_info": []
+                'truck_name': request.form.get('truck_name'),
+                'truck_body_type': request.form.get('truck_body_type'),
+                'distance_to_rear_axle': float(request.form.get('distance_to_rear_axle')),
+                'interior_rack_quantity': int(request.form.get('interior_rack_quantity')),
+                'exterior_rack_quantity': int(request.form.get('exterior_rack_quantity')),
+                'rack_info': {
+                    'interior': [],
+                    'exterior': []
+                }
             }
+            for i in range(int(truck_obj['interior_rack_quantity'])):
+                rack_obj = {
+                    'rack_length': float(request.form.getlist('exterior_rack_length')[i]),
+                    'rack_depth': float(request.form.getlist('exterior_rack_depth')[i]),
+                    'rack_height': float(request.form.getlist('exterior_rack_height')[i])
+                }
+                truck_obj['rack_info']['interior'].append(rack_obj)
             for i in range(int(truck_obj['exterior_rack_quantity'])):
                 rack_obj = {
-                    "exterior_rack_length": float(request.form.getlist('exterior_rack_length')[i]),
-                    "exterior_rack_depth": float(request.form.getlist('exterior_rack_depth')[i]),
-                    "exterior_rack_height": float(request.form.getlist('exterior_rack_height')[i])
+                    'rack_length': float(request.form.getlist('exterior_rack_length')[i]),
+                    'rack_depth': float(request.form.getlist('exterior_rack_depth')[i]),
+                    'rack_height': float(request.form.getlist('exterior_rack_height')[i])
                 }
-                truck_obj['exterior_rack_info'].append(rack_obj)
+                truck_obj['rack_info']['exterior'].append(rack_obj)
 
             utils.save_truck(truck_obj)
 
@@ -201,8 +208,8 @@ def parse_manifest():
             return redirect(f"{request.path}?{request.args.get('manifest')}")
     return errors._404('invalid method')
 
-@app.route('/generate-layout', methods=['GET', 'POST'])
-def generate_layout():
+@app.route('/layout', methods=['GET', 'POST'])
+def layout():
     '''
     Route for generating a truck layout
     '''
@@ -213,7 +220,6 @@ def generate_layout():
     if request.method == 'GET':
         trucks = api.truck_api_get_all_trucks()
         if selected_truck:
-            selected_truck = eval(urllib.parse.unquote(selected_truck))
             trucks['selected_truck'] = selected_truck
 
         racks = api.rack_api_get_all_racks()
@@ -223,24 +229,20 @@ def generate_layout():
 
         manifests = api.manifest_api_get_all_manifests()
         if selected_manifest:
-            # selected_manifest = eval(urllib.parse.unquote(selected_manifest))
             manifests['selected_manifest'] = selected_manifest
         for idx, manifest in enumerate(manifests['manifests']):
             manifests['manifests'][idx] = manifest.split('\\')[-1].split('.')[0]
 
-        return render_template('generate_layout.html',
+        return render_template('layout.html',
             trucks=trucks,
             racks=racks,
             manifests=manifests,
+            selected_truck=selected_truck,
             selected_manifest=selected_manifest
         )
+    
     if request.method == 'POST':
         truck_details = api.truck_api_get_truck(selected_truck)
-
-        # selected_racks = request.args.getlist('racks')
-        # racks_details = []
-        # for rack in selected_racks:
-        #     racks_details.append(api.rack_api_get_rack(rack))
 
         manifest_map = utils.get_manifest_map(selected_manifest)
         manifest_details = utils.analyze_manifest(selected_manifest, manifest_map)

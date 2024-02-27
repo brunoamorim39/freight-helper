@@ -46,3 +46,16 @@ def generate_layout_api_get_layouts():
 @app.route('/api/layouts', methods=['POST'])
 def generate_layout_api_create_layout():
     return
+
+@app.route('/api/plans/shipments', methods=['PUT'])
+def store_shipment_plan(shipment_plan: object):
+    shipment_plan_name = f"{shipment_plan['truck_details']['truck_name'].replace(' ', '_')}-{shipment_plan['manifest_details']['name']}-shipment_plan"
+    with open(f'./resources/plans/shipments/{shipment_plan_name}', 'w', encoding='utf-8') as shipment_plan_file:
+        stringified_json = json.dumps(shipment_plan)
+        shipment_plan_file.write(stringified_json)
+    response = app.response_class(
+        response=stringified_json,
+        status=200,
+        mimetype='application/json'
+    )
+    return response

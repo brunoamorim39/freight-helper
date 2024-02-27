@@ -1,1 +1,1 @@
-{"W31_Manifest_20230922": {"stop_number": "STOPNUMBER", "description": "NULL", "quantity": "NULL", "weight": "NULL", "square_footage": "NULL", "length": "NULL", "width": "NULL", "thickness": "NULL"}}
+{"W31_Manifest_20230922": {"stop_number": "STOPNUMBER", "description": "PRODUCTDESCRIPTION", "quantity": "SCANNEDQTY", "weight": "LIneWeIght", "square_footage": "BIllIngSQFTtotal", "length": "NULL", "width": "NULL", "thickness": "NULL"}, "null": {}}

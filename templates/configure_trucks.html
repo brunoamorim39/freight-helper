@@ -58,12 +58,11 @@
                         **{
                             'hx-get': url_for('truck_form_get_body_type_options'),
                             'hx-swap': 'outerHTML',
-                            'hx-target': '#truck-interior-info'
+                            'hx-target': '#truck-info'
                         }) 
                     }}
 
-                    <div id="truck-interior-info"></div>
-                    <div id="truck-exterior-rack-info"></div>
+                    <div id="truck-info"></div>
 
                     {{ truck_form.submit_truck_create(class_='btn btn-primary') }}
                 </form>

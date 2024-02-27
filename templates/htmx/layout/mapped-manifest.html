@@ -1,23 +1,82 @@
-<div id="describe-manifest">
-    <h3 class="card-header">{{ manifest_name }}</h3>
-    <div class="card-body">
-        <table class="table">
-            <thead>
-                <tr>
-                    {% for param in manifest_params %}
-                        <th scope="col">{{ param.name }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in manifest_details %}
-                    <tr>
-                        {% for param in manifest_params %}
-                            <td>{{ item[param.key] }}</td>
+<div id="describe-manifest" class="col">
+    <div class="card">
+        <form id="manifest-data">
+            <div class="card-header d-flex justify-content-between">
+                <h3>{{ manifest_name }}</h3>
+                <button class="btn btn-primary"
+                    hx-post="{{ url_for('layout_form_post_save_manifest', truck=request.args.get('truck'),  manifest=request.args.get('manifest')) }}"
+                    hx-swap="outerHTML"
+                    hx-target="#describe-manifest"
+                >
+                    Save manifest data
+                </button>
+            </div>
+            <div class="card-body manifest-table">
+                <table class="table">
+                    <thead>
+                        <tr id="manifest-column-headers">
+                            <th scope="col"></th>
+                            {% for param in manifest_params %}
+                                <th scope="col">
+                                    {{ param.name }}
+                                    {% if param.key in manifest_unit_map %}
+                                        ({{ param.units[manifest_unit_map[param.key]] }})
+                                    {% endif %}
+                                </th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in manifest_details %}
+                            <tr id="manifest-item-row-{{ loop.index }}">
+                                <td class="align-middle">
+                                    <button type="button" class="btn-close" aria-label="Close"
+                                        hx-post="{{ url_for('layout_form_post_save_manifest', manifest=request.args.get('manifest'), row_to_delete=loop.index) }}"
+                                        hx-swap="outerHTML"
+                                        hx-target="#describe-manifest"
+                                    ></button>
+                                </td>
+                                {% set row_loop = loop %}
+                                {% for param in manifest_params %}
+                                    {% if item[param.key] %}
+                                        <td class="align-middle">
+                                            {{ item[param.key] }}
+                                            <input type="hidden" name="{{ param.key }}" value="{{ item[param.key] }}">
+                                        </td>
+                                    {% else %}
+                                        <td class="align-middle">
+                                            <input class="form-control" type="{{ param.type }}" name="{{ param.key }}"
+                                                {% if param.type == "number" %}
+                                                    min="0"
+                                                {% endif %}
+                                            >
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
                         {% endfor %}
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div>
+        <div class="d-flex justify-content-center py-3">
+            <button class="btn btn-primary 
+                {% if flag_incomplete_manifest_data %}
+                    disabled
+                {% endif %}"
+                hx-post="{{ url_for('layout_form_post_generate_shipment_plan', truck=request.args.get('truck'), manifest=request.args.get('manifest')) }}"
+                hx-swap="outerHTML"
+                hx-target="#main-content"
+                hx-include="previous form"
+            >
+                {% if flag_incomplete_manifest_data %}
+                    Complete manifest data entry to proceed
+                {% else %}
+                    Generate layout
+                {% endif %}
+            </button>
+        </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-<div id="describe-manifest">
+<div id="describe-manifest" class="col-7">
     <h3>{{ manifest_name }}</h3>
     <div class="card">
         <div class="card-header d-flex justify-content-between">
@@ -10,18 +10,36 @@
                 hx-post="{{ url_for('layout_form_post_describe_manifest', manifest=manifest_name) }}"
                 hx-swap="outerHTML"
                 hx-target="#describe-manifest"
-                hx-replace-url="?manifest={{ manifest_name }}"
+                hx-on::before-request="const url = new URL(location);url.searchParams.set('manifest', '{{ manifest_name }}');history.pushState({}, '', url);"
             >
                 {% for param in manifest_params %}
                     <div class="d-flex justify-content-between mt-3">
-                        <div class="col-auto">
+                        <div class="col-3">
                             <label class="form-label" for="{{ param.key }}">{{ param.name }}</label>
                         </div>
-                        <div class="col-auto">
+                        <div class="col-3">
+                            {% if param.units %}
+                                <select class="form-select" id="{{ param.key }}-units" name="{{ param.key }}-units" aria-label="{{ param.key }}-units">
+                                    <option value="NULL" selected disabled>
+                                        Select a unit
+                                    </option>
+                                    {% for unit in param.units %}
+                                        <option value="{{ unit }}">
+                                            {{ unit }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            {% endif %}
+                        </div>
+                        <div class="col-4">
                             <select class="form-select" id="{{ param.key }}" name="{{ param.key }}" aria-label="{{ param.name }}">
-                                <option value="NULL" selected disabled>Open to select a column</option>
+                                <option value="NULL" selected disabled>
+                                    Select a column
+                                </option>
                                 {% for column_name in manifest_column_names %}
-                                    <option value="{{ column_name }}">{{ column_name }}</option>
+                                    <option value="{{ column_name }}">
+                                        {{ column_name }}
+                                    </option>
                                 {% endfor %}
                             </select>
                         </div>

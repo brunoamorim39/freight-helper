@@ -1,0 +1,15 @@
+<div id="main-content">
+    <div class="container d-flex justify-content-center py-3">
+        <div id="shipment-layout" class="col">
+            {% for sector in shipment_plan['flattened_map'] %}
+                {% for side in shipment_plan['flattened_map'][sector] %}
+                    <div id="shipment-layout-{{sector}}-{{side}}" class="col-3 d-flex flex-column">
+                        {% for rack in shipment_plan['flattened_map'][sector][side]['racks'] %}
+                            
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>

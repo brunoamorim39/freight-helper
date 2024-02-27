@@ -2,35 +2,72 @@
     "manifest_parameters": [
         {
             "key": "stop_number",
-            "name": "Stop Number"
+            "name": "Stop Number",
+            "type": "number",
+            "units": null
         },
         {
             "key": "description",
-            "name": "Description"
+            "name": "Description",
+            "type": "text",
+            "units": null
         },
         {
             "key": "quantity",
-            "name": "Quantity"
+            "name": "Quantity",
+            "type": "number",
+            "units": null
         },
         {
             "key": "weight",
-            "name": "Weight"
+            "name": "Weight",
+            "type": "number",
+            "units": {
+                "Pounds": "lbs",
+                "Kilograms": "kg"
+            }
         },
         {
             "key": "square_footage",
-            "name": "Square Footage"
+            "name": "Square Footage",
+            "type": "number",
+            "units": {
+                "Square feet": "sqft",
+                "Square meters": "sqm"
+            }
         },
         {
             "key": "length",
-            "name": "Length"
+            "name": "Length",
+            "type": "number",
+            "units": {
+                "Inches": "in",
+                "Feet": "ft",
+                "Millimeters": "mm",
+                "Meters": "m"
+            }
         },
         {
             "key": "width",
-            "name": "Width"
+            "name": "Width",
+            "type": "number",
+            "units": {
+                "Inches": "in",
+                "Feet": "ft",
+                "Millimeters": "mm",
+                "Meters": "m"
+            }
         },
         {
             "key": "thickness",
-            "name": "Thickness"
+            "name": "Thickness",
+            "type": "number",
+            "units": {
+                "Inches": "in",
+                "Feet": "ft",
+                "Millimeters": "mm",
+                "Meters": "m"
+            }
         }
     ]
 }

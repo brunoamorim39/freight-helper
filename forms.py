@@ -54,6 +54,30 @@ class TruckOpenGlassRackForm(FlaskForm):
             )
         ]
     )
+    interior_rack_quantity = IntegerField(
+        label='Number of interior racks',
+        validators=[
+            InputRequired(),
+            NumberRange(
+                min=0,
+                max=None,
+                message='Rack quantity must be equal to or greater than zero.'
+            )
+        ]
+    )
+    exterior_rack_quantity = IntegerField(
+        label='Number of exterior rack sections',
+        validators=[
+            InputRequired(),
+            NumberRange(
+                min=0,
+                max=None,
+                message='Rack quantity must be equal to or greater than zero.'
+            )
+        ]
+    )
+
+class TruckInteriorRackForm(FlaskForm):
     interior_rack_length = DecimalField(
         label='Length of interior racks (ft)',
         places=2,
@@ -87,17 +111,6 @@ class TruckOpenGlassRackForm(FlaskForm):
                 min=0,
                 max=None,
                 message='Interior rack height must be greater than or equal to zero.'
-            )
-        ]
-    )
-    exterior_rack_quantity = IntegerField(
-        label='Number of exterior rack sections',
-        validators=[
-            InputRequired(),
-            NumberRange(
-                min=0,
-                max=None,
-                message='Rack quantity must be equal to or greater than zero.'
             )
         ]
     )

@@ -1,18 +1,22 @@
-<div id="truck-interior-info">    
+<div id="truck-info">    
     {{ form.truck_name.label(class_='form-label') }}
     {{ form.truck_name(class_='form-control') }}
 
     {{ form.distance_to_rear_axle.label(class_='form-label') }}
     {{ form.distance_to_rear_axle(class_='form-control') }}
 
-    {{ form.interior_rack_length.label(class_='form-label') }}
-    {{ form.interior_rack_length(class_='form-control') }}
+    {{ form.interior_rack_quantity.label(class_='form-label') }}
+    {{ form.interior_rack_quantity(
+        id='interior-rack-quantity-input',
+        class_='form-control',
+        **{
+            'hx-get': url_for('truck_form_interior_rack_options'),
+            'hx-swap': 'innerHTML',
+            'hx-target': '#truck-interior-rack-info'
+        }) 
+    }}
 
-    {{ form.interior_rack_depth.label(class_='form-label') }}
-    {{ form.interior_rack_depth(class_='form-control') }}
-
-    {{ form.interior_rack_height.label(class_='form-label') }}
-    {{ form.interior_rack_height(class_='form-control') }}
+    <div id="truck-interior-rack-info"></div>
 
     {{ form.exterior_rack_quantity.label(class_='form-label') }}
     {{ form.exterior_rack_quantity(
@@ -24,4 +28,6 @@
             'hx-target': '#truck-exterior-rack-info'
         }) 
     }}
+
+    <div id="truck-exterior-rack-info"></div>
 </div>
